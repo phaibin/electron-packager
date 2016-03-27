@@ -14,4 +14,8 @@ case "$TRAVIS_OS_NAME" in
     ./winetricks --version
     ./winetricks -q vcrun2013
     ;;
+  "osx")
+    brew update
+    brew install wine
+    ;;
 esac
