@@ -16,6 +16,6 @@ case "$TRAVIS_OS_NAME" in
     ;;
   "osx")
     brew update
-    brew install wine
+    brew install --without-test wine
     ;;
 esac
