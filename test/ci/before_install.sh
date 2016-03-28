@@ -17,7 +17,7 @@ case "$TRAVIS_OS_NAME" in
   "osx")
     brew update
     for pkg in `brew deps wine`; do
-      brew install --force-bottle wine
+      brew install --force-bottle $pkg
     done
     brew install --force-bottle wine
     ;;
