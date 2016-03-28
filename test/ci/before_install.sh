@@ -16,9 +16,9 @@ case "$TRAVIS_OS_NAME" in
     ;;
   "osx")
     brew update
-    for pkg in `brew deps wine`; do
-      brew install --force-bottle $pkg
+    for pkg in `brew deps --skip-optional wine`; do
+      brew install --ignore-dependencies --force-bottle --$pkg
     done
-    brew install --force-bottle wine
+    brew install --ignore-dependencies --force-bottle wine
     ;;
 esac
