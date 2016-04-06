@@ -12,7 +12,7 @@ case "$TRAVIS_OS_NAME" in
     ;;
   "osx")
     brew update
-    for pkg in `brew deps --skip-optional winetricks`; do
+    for pkg in `brew deps --skip-optional winetricks | grep -v fontconfig`; do
       brew install --ignore-dependencies --force-bottle $pkg
     done
     ;;
