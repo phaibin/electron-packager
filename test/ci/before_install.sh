@@ -11,9 +11,12 @@ case "$TRAVIS_OS_NAME" in
     sudo apt-get install --no-install-recommends --yes wine1.6 winetricks
     ;;
   "osx")
+    BREW_INSTALL="brew install --ignore-dependencies --force-bottle"
     brew update
-    for pkg in `brew deps --skip-optional winetricks | grep -v fontconfig`; do
-      brew install --ignore-dependencies --force-bottle $pkg
+    # freetype needs to be installed before fontconfig
+    $BREW_INSTALL freetype
+    for pkg in `brew deps --skip-optional winetricks | grep -v freetype`; do
+      $BREW_INSTALL $pkg
     done
     ;;
 esac
