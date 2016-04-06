@@ -1,6 +1,7 @@
 #!/bin/bash -xe
 # -*- coding: utf-8 -*-
 
+# Install wine & winetricks dependencies
 case "$TRAVIS_OS_NAME" in
   "linux")
     sudo dpkg --add-architecture i386
@@ -8,17 +9,17 @@ case "$TRAVIS_OS_NAME" in
     sudo rm /etc/apt/sources.list.d/google-chrome.list*
     sudo apt-get update
     sudo apt-get install --no-install-recommends --yes wine1.6 winetricks
-    # 20140817
-    wget -q https://raw.githubusercontent.com/Winetricks/winetricks/fa9e42955dbdf780240dedf9057295264fddd98f/src/winetricks
-    chmod +x winetricks
-    ./winetricks --version
-    ./winetricks -q vcrun2013
     ;;
   "osx")
     brew update
-    for pkg in `brew deps --skip-optional wine`; do
+    for pkg in `brew deps --skip-optional winetricks`; do
       brew install --ignore-dependencies --force-bottle $pkg
     done
-    brew install --ignore-dependencies --force-bottle wine
     ;;
 esac
+
+# Install and run winetricks 20140817
+wget -q https://raw.githubusercontent.com/Winetricks/winetricks/fa9e42955dbdf780240dedf9057295264fddd98f/src/winetricks
+chmod +x winetricks
+./winetricks --version
+./winetricks -q vcrun2013
