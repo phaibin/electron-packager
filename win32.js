@@ -7,12 +7,15 @@ var common = require('./common')
 module.exports = {
   createApp: function createApp (opts, templatePath, callback) {
     common.initializeApp(opts, templatePath, path.join('resources', 'app'), function buildWinApp (err, tempPath) {
+      var tempPathBak = tempPath;
       if (err) return callback(err)
 
-      var newExePath = path.join(tempPath, opts.name + '.exe')
+      var newExePath;
       var operations = [
         function (cb) {
-          mv(path.join(tempPath, 'electron.exe'), newExePath, cb)
+          mv(tempPath, path.join(tempPath, '../temp'), cb)
+          tempPath = path.join(tempPath, '../temp');
+          newExePath = path.join(tempPath, 'electron.exe');
         }
       ]
 
@@ -49,6 +52,15 @@ module.exports = {
           })
         })
       }
+
+      operations.push(function (cb) {
+        newExePath = path.join(tempPath, opts.name + '.exe')
+        mv(path.join(tempPath, 'electron.exe'), newExePath, cb)
+      });
+
+      operations.push(function (cb) {
+        mv(tempPath, tempPathBak, cb)
+      });
 
       series(operations, function (err) {
         if (err) return callback(err)
